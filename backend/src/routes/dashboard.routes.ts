@@ -1,9 +1,10 @@
 import express from "express";
 import DashboardCtrl from "@modules/dashboard/dashboard.ctrl";
-import { verifyToken } from "@middlewares/jwt.middleware";
+import { verifyToken, getUserFromToken } from "@middlewares/jwt.middleware";
 
 const router = express.Router();
 
-router.get("/tile_count", verifyToken, DashboardCtrl.getTileCount);
+router.get("/tile_count", verifyToken, getUserFromToken, DashboardCtrl.getTileCount);
+router.get("/today_tasks", verifyToken, getUserFromToken, DashboardCtrl.getTodaysTasks);
 
 export default router;

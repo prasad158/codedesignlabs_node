@@ -24,6 +24,21 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+function getUserFromToken(req: Request, res: Response, next: NextFunction) {
+    try {
+        let token = req.headers.authorization || '';
+        token = token.split("Bearer ").join("");
+
+        const user_data = JWTUtil.decodeToken(token);
+        req.user = user_data;
+
+        next();
+    } catch (err) {
+        res.sendRes(HttpStatus.INTERNAL_SERVER_ERROR, { success: false, msg: "" });
+    }
+}
+
 export {
-    verifyToken
+    verifyToken,
+    getUserFromToken
 }
