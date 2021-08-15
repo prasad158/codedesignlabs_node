@@ -1,6 +1,5 @@
 import sequelize from "@config/db";
 import { DataTypes, Model } from "sequelize";
-import AssignmentModel from "./AssignmentModel";
 
 export interface IClientModel {
     id: number;
@@ -20,9 +19,9 @@ export interface IClientModel {
     instagram_link: string;
     linkedin_link: string;
     created_by: number;
-    created_at: string;
+    created_at: Date;
     updated_by: number;
-    updated_at: string;
+    updated_at: Date;
 }
 
 class ClientModel extends Model<IClientModel> implements IClientModel {
@@ -43,9 +42,9 @@ class ClientModel extends Model<IClientModel> implements IClientModel {
     public instagram_link!: string;
     public linkedin_link!: string;
     public created_by!: number;
-    public created_at!: string;
+    public created_at!: Date;
     public updated_by!: number;
-    public updated_at!: string;
+    public updated_at!: Date;
 }
 
 ClientModel.init({
@@ -66,9 +65,9 @@ ClientModel.init({
     instagram_link: { type: DataTypes.STRING },
     linkedin_link: { type: DataTypes.STRING },
     created_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    created_at: { type: DataTypes.STRING },
+    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updated_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    updated_at: { type: DataTypes.STRING }
+    updated_at: { type: DataTypes.DATE }
 }, {
     tableName: 'tbl_client',
     sequelize,

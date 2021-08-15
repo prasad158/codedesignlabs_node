@@ -13,9 +13,9 @@ export interface IUserInfoModel {
     dp: string;
     department: string;
     created_by: number;
-    created_at: string;
+    created_at: Date;
     updated_by: number;
-    updated_at: string;
+    updated_at: Date;
 }
 
 class UserInfoModel extends Model<IUserInfoModel> implements IUserInfoModel {
@@ -30,9 +30,14 @@ class UserInfoModel extends Model<IUserInfoModel> implements IUserInfoModel {
     public dp!: string;
     public department!: string;
     public created_by!: number;
-    public created_at!: string;
+    public created_at!: Date;
     public updated_by!: number;
-    public updated_at!: string;
+    public updated_at!: Date;
+
+    static getUserStatus(status: string): number {
+        if (status == 'active') { return 1; }
+        return 0;
+    }
 }
 
 UserInfoModel.init({
@@ -46,10 +51,10 @@ UserInfoModel.init({
     designation: { type: DataTypes.STRING },
     dp: { type: DataTypes.STRING },
     department: { type: DataTypes.STRING },
-    created_by: { type: DataTypes.INTEGER.UNSIGNED },
-    created_at: { type: DataTypes.STRING },
-    updated_by: { type: DataTypes.INTEGER.UNSIGNED },
-    updated_at: { type: DataTypes.STRING }
+    created_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
+    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    updated_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
+    updated_at: { type: DataTypes.DATE }
 }, {
     tableName: 'user_info',
     sequelize,

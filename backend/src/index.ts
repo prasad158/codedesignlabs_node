@@ -10,9 +10,18 @@ const bodyParser = require('body-parser');
 dotenv.config({ path: path.resolve('.env') });
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+
+// for parsing application/json
 app.use(bodyParser.json());
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true }));
+//form-urlencoded
+
 app.use(response_middleware);
+
+// for parsing multipart/form-data
+app.use(express.static('public'));
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on PORT ${process.env.PORT}`);

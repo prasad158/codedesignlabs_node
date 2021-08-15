@@ -18,9 +18,9 @@ export interface IAssignmentTaskModel {
     mark_paid_on: string;
     payment_remark: string;
     created_by: number;
-    created_at: string;
+    created_at: Date;
     updated_by: number;
-    updated_at: string;
+    updated_at: Date;
 }
 
 class AssignmentTaskModel extends Model<IAssignmentTaskModel> implements IAssignmentTaskModel {
@@ -41,9 +41,9 @@ class AssignmentTaskModel extends Model<IAssignmentTaskModel> implements IAssign
     public payment_remark!: string;
 
     public created_by!: number;
-    public created_at!: string;
+    public created_at!: Date;
     public updated_by!: number;
-    public updated_at!: string;
+    public updated_at!: Date;
 }
 
 AssignmentTaskModel.init({
@@ -63,9 +63,9 @@ AssignmentTaskModel.init({
     mark_paid_on: { type: DataTypes.DATE },
     payment_remark: { type: DataTypes.STRING },
     created_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    created_at: { type: DataTypes.STRING },
+    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updated_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    updated_at: { type: DataTypes.STRING }
+    updated_at: { type: DataTypes.DATE }
 }, {
     tableName: 'assignment_tasks',
     sequelize,

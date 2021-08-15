@@ -12,9 +12,9 @@ export interface IProjectModel {
     project_outcome: string
     archive: number;
     created_by: number;
-    created_at: string;
+    created_at: Date;
     updated_by: number;
-    updated_at: string;
+    updated_at: Date;
 }
 
 class ProjectModel extends Model<IProjectModel> implements IProjectModel {
@@ -28,9 +28,9 @@ class ProjectModel extends Model<IProjectModel> implements IProjectModel {
     public project_outcome!: string;
     public archive!: number;
     public created_by!: number;
-    public created_at!: string;
+    public created_at!: Date;
     public updated_by!: number;
-    public updated_at!: string;
+    public updated_at!: Date;
 }
 
 ProjectModel.init({
@@ -44,9 +44,9 @@ ProjectModel.init({
     project_outcome: { type: DataTypes.STRING },
     archive: { type: DataTypes.INTEGER },
     created_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    created_at: { type: DataTypes.STRING },
+    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updated_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    updated_at: { type: DataTypes.STRING }
+    updated_at: { type: DataTypes.DATE }
 }, {
     tableName: 'tbl_project',
     sequelize,

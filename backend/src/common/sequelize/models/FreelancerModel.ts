@@ -20,9 +20,9 @@ export interface IFreelancerModel {
     pan_card: string;
     active: boolean;
     created_by: number;
-    created_at: string;
+    created_at: Date;
     updated_by: number;
-    updated_at: string;
+    updated_at: Date;
 }
 
 class FreelancerModel extends Model<IFreelancerModel> implements IFreelancerModel {
@@ -44,9 +44,9 @@ class FreelancerModel extends Model<IFreelancerModel> implements IFreelancerMode
     public pan_card!: string;
     public active!: boolean;
     public created_by!: number;
-    public created_at!: string;
+    public created_at!: Date;
     public updated_by!: number;
-    public updated_at!: string;
+    public updated_at!: Date;
 }
 
 FreelancerModel.init({
@@ -68,9 +68,9 @@ FreelancerModel.init({
     pan_card: { type: DataTypes.STRING },
     active: { type: DataTypes.BOOLEAN },
     created_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    created_at: { type: DataTypes.STRING },
+    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updated_by: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'user_info', key: 'user_id' } },
-    updated_at: { type: DataTypes.STRING }
+    updated_at: { type: DataTypes.DATE }
 }, {
     tableName: 'freelancers',
     sequelize,
