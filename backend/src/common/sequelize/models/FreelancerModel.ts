@@ -1,5 +1,7 @@
 import sequelize from "@config/db";
 import { DataTypes, Model } from "sequelize";
+import FreelancerProfileType from "./FreelancerProfileTypeModel";
+import UserInfoModel from "./UserInfoModel";
 
 export interface IFreelancerModel {
     freelancer_id: number;
@@ -53,7 +55,7 @@ FreelancerModel.init({
     freelancer_id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true },
     freelancer_name: { type: DataTypes.STRING },
     freelancer_email_id: { type: DataTypes.STRING },
-    profile_type: { type: DataTypes.STRING, references: { model: 'freelancer_profile_types', key: 'freelancer_profile_type_name' } },
+    profile_type: { type: DataTypes.INTEGER.UNSIGNED, references: { model: 'freelancer_profile_types', key: 'freelancer_profile_type_id' } },
     portfolio_link: { type: DataTypes.STRING },
     date_of_joining: { type: DataTypes.STRING },
     freelancer_address: { type: DataTypes.STRING },
@@ -75,6 +77,21 @@ FreelancerModel.init({
     tableName: 'freelancers',
     sequelize,
     timestamps: false
+});
+
+FreelancerModel.hasOne(FreelancerProfileType, {
+    sourceKey: 'profile_type',
+    foreignKey: 'freelancer_profile_type_id'
+});
+
+FreelancerModel.hasOne(UserInfoModel, {
+    sourceKey: 'created_by',
+    foreignKey: 'user_id'
+});
+
+FreelancerModel.hasOne(UserInfoModel, {
+    sourceKey: 'updated_by',
+    foreignKey: 'user_id'
 });
 
 export default FreelancerModel;

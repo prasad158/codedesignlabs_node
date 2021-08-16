@@ -1,17 +1,17 @@
 import sequelize from "@config/db";
 import { DataTypes, Model } from "sequelize";
 
-export interface IFreelancerProfileType {
+export interface IFreelancerProfileTypeModel {
     freelancer_profile_type_id: number;
     freelancer_profile_type_name: string;
 }
 
-class FreelancerProfileType extends Model<IFreelancerProfileType> implements IFreelancerProfileType {
+class FreelancerProfileTypeModel extends Model<IFreelancerProfileTypeModel> implements IFreelancerProfileTypeModel {
     public freelancer_profile_type_id!: number;
     public freelancer_profile_type_name!: string
 }
 
-FreelancerProfileType.init({
+FreelancerProfileTypeModel.init({
     freelancer_profile_type_id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true },
     freelancer_profile_type_name: { type: DataTypes.STRING }
 }, {
@@ -20,4 +20,4 @@ FreelancerProfileType.init({
     timestamps: false
 });
 
-export default FreelancerProfileType;
+export default FreelancerProfileTypeModel;

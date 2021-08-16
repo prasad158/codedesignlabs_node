@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import HttpStatus from "http-status-codes";
 import UserPermisssionModel from "@models/UserPermissionModel";
+import FreelancerSkillsModel from "@models/FreelancerSkillsModel";
 
 export default class CommonCtrl {
 
@@ -17,6 +18,18 @@ export default class CommonCtrl {
             const permission_list = Object.keys(permissions as any);
 
             res.sendRes(HttpStatus.OK, { success: true, data: { permission_list } });
+        } catch (err) {
+            res.sendRes(HttpStatus.INTERNAL_SERVER_ERROR, { success: false, stack: err });
+        }
+    }
+
+    static async getFreelancerSkills(req: Request, res: Response, next: NextFunction) {
+        try {
+            const work_preference = await FreelancerSkillsModel.findAll({
+                raw: true
+            });
+
+            res.sendRes(HttpStatus.OK, { success: true, data: { work_preference } });
         } catch (err) {
             res.sendRes(HttpStatus.INTERNAL_SERVER_ERROR, { success: false, stack: err });
         }

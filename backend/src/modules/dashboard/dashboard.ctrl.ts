@@ -116,8 +116,7 @@ export default class DashboardCtrl {
                         model: ClientModel,
                         where: {
                             id: Sequelize.col("TaskModel.client_id")
-                        },
-                        attributes: []
+                        }
                     },
                     {
                         model: ProjectModel,

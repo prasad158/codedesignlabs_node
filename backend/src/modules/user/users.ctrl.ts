@@ -1,21 +1,28 @@
 import UserInfoModel, { IUserInfoModel } from "@models/UserInfoModel";
 import UserPermisssionModel from "@models/UserPermissionModel";
 import { validateObject } from "@utils/common.util";
-import { Request, Response, NextFunction, raw } from "express";
+import { Request, Response, NextFunction } from "express";
 import HttpStatus from "http-status-codes";
 import md5 from "md5";
 import fs from "fs";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import moment from "moment";
 
 export default class UserCtrl {
 
     static async getUserList(req: Request, res: Response, next: NextFunction) {
         try {
-            const user_status_type = req.params.type;
+            const user_status_type = req.query.status;
+            const limit = req.query.limit;
+            const offset = req.query.offset;
+            const sort_by = req.query.sort_by;
+            const order_by = req.query.order_by;
 
             const user = await UserInfoModel.findAll({
-                where: user_status_type ? { active: parseInt(UserInfoModel.getUserStatus(user_status_type).toString(), 10) } : {},
+                where: user_status_type ? { active: parseInt(UserInfoModel.getUserStatus(user_status_type.toString()).toString(), 10) } : {},
+                limit: limit ? parseInt(limit.toString(), 10) : undefined,
+                offset: offset ? parseInt(offset.toString(), 10) : undefined,
+                order: (sort_by && order_by) ? [[sort_by.toString(), order_by.toString()]] : [[Sequelize.col('user_id'), 'desc']],
                 raw: true
             });
 
@@ -92,7 +99,7 @@ export default class UserCtrl {
             user_data.created_by = req.user.id;
 
             // add user data
-            const created_user = await (await UserInfoModel.create(user_data))
+            const created_user = await UserInfoModel.create(user_data);
             const created_user_info: IUserInfoModel = created_user.toJSON() as IUserInfoModel;
 
             // add user permissions

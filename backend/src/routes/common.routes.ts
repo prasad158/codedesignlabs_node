@@ -3,6 +3,7 @@ import CommonCtrl from "@modules/common/common.ctrl";
 
 const router = express.Router();
 
-router.get('/list', CommonCtrl.getPermissionList);
+router.get('/permission/list', CommonCtrl.getPermissionList);
+router.get('/freelancer_skills/list', CommonCtrl.getFreelancerSkills);
 
 export default router;
