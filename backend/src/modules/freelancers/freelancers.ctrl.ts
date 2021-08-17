@@ -22,10 +22,11 @@ export default class FreelancersCtrl {
             if (profile_type && profile_type != 'all') { where.profile_type = profile_type; }
 
             const freelancers = await FreelancerModel.findAll({
-                attributes: ["FreelancerModel.*", "FreelancerProfileType.freelancer_profile_type_name"],
+                attributes: ["FreelancerModel.*", "FreelancerProfileTypeModel.freelancer_profile_type_name"],
                 where,
                 include: [{
-                    model: FreelancerProfileTypeModel
+                    model: FreelancerProfileTypeModel,
+                    attributes: []
                 }],
                 limit: limit ? parseInt(limit.toString(), 10) : undefined,
                 offset: offset ? parseInt(offset.toString(), 10) : undefined,

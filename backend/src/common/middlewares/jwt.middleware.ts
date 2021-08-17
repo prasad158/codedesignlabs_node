@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import HttpStatus from "http-status-codes";
 import JWTUtil from "@utils/jwt.util";
+import UserPermisssionModel from "@models/UserPermissionModel";
 
 function verifyToken(req: Request, res: Response, next: NextFunction) {
     try {
@@ -24,13 +25,20 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-function getUserFromToken(req: Request, res: Response, next: NextFunction) {
+async function getUserFromToken(req: Request, res: Response, next: NextFunction) {
     try {
         let token = req.headers.authorization || '';
         token = token.split("Bearer ").join("");
 
         const user_data = JWTUtil.decodeToken(token);
         req.user = user_data;
+
+        const user_permissions = await UserPermisssionModel.findOne({
+            where: { user_id: req.user.id },
+            raw: true
+        });
+
+        req.user.permissions = user_permissions;
 
         next();
     } catch (err) {
