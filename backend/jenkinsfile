@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    stages {
+        stage('git') {
+            steps {
+                dir('/home/prasad/projects/jenkins/'){
+                    sh 'git clone https://github.com/prasad158/codedesignlabs_node.git'
+                    sh "git checkout ${}"
+                }
+            }
+        }
+        stage {
+            steps {
+                dir('/home/prasad/projects/jenkins/codedesignlabs_node/backend') {
+                    sh 'npm install'
+                    sh 'tsc -p tsconfig.json'
+                    sh ''
+                }
+            }
+        }
+    }
+}
