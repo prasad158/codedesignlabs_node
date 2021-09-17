@@ -1,22 +1,45 @@
+def (origin, branch_name) = BRANCH.tokenize( '/' )
+
 pipeline {
     agent any
+    
+    environment{
+        MY_FILE = fileExists '/home/prasad/projects/jenkins/codedesignlabs_node/.gitignore'
+    }
+
     stages {
-        stage('git') {
+        stage('git clone') {
+            when { expression { MY_FILE == 'false' } }
             steps {
-                dir('/home/prasad/projects/jenkins/'){
-                    echo "BRANCH NAME ==> ${BRANCH}"
-                    sh "git status"
-                    sh "git checkout ${BRANCH}"
-                    sh "git pull"
+                dir('/home/prasad/projects/jenkins'){
+                    sh 'git clone https://github.com/prasad158/codedesignlabs_node.git'
+                    sh 'cd codedesignlabs_node'
+                    echo 'git clonning successfull'
                 }
             }
         }
-        stage {
-            steps {
-                dir('/home/prasad/projects/jenkins/codedesignlabs_node/backend') {
+        stage('git pull'){
+            steps{
+                dir('/home/prasad/projects/jenkins/codedesignlabs_node/'){
+                    sh 'git fetch'
+                    echo "checkout to brnach ==> ${branch_name}"
+                    sh "git checkout ${branch_name}"
+                    sh 'git pull'
+                }
+            }
+        }
+        stage('npm install'){
+            steps{
+                dir('/home/prasad/projects/jenkins/codedesignlabs_node/backend/'){
                     sh 'npm install'
                     sh 'tsc -p tsconfig.json'
-                    sh 'node ./dist/index.js'
+                }
+            }
+        }
+        stage('pm2 restart'){
+            steps{
+                dir('/home/prasad/projects/jenkins/codedesignlabs_node/backend/'){
+                    sh 'pm2 start dist/index.js --name codedesign'
                 }
             }
         }
