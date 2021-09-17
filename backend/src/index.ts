@@ -7,7 +7,7 @@ import main_router from "@routes/router";
 
 const bodyParser = require('body-parser');
 
-dotenv.config({ path: path.resolve('.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
 
